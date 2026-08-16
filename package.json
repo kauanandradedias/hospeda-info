@@ -1,0 +1,9 @@
+{
+  "name": "email-advogados",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page + checador de disponibilidade de domínio (.adv.br / .com.br) para e-mail profissional de advogados",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
