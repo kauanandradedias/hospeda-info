@@ -277,8 +277,8 @@ input {
 }
 
 .brand-mark {
-  width: 26px;
-  height: 29px;
+  width: 27px;
+  height: auto;
   flex-shrink: 0;
 }
 
@@ -1651,7 +1651,7 @@ input {
   }
 
   .header-inner {
-    height: 68px;
+    height: 56px;
   }
 
   .header-cta span {
@@ -1662,20 +1662,36 @@ input {
     content: "Verificar";
   }
 
+  .header-cta {
+    padding: 9px 16px;
+  }
+
   .hero {
-    padding: 68px 0 52px;
+    padding: 8px 0 40px;
+  }
+
+  .eyebrow {
+    margin-bottom: 6px;
   }
 
   .hero h1 {
-    font-size: clamp(1.9rem, 7.5vw, 2.6rem);
+    font-size: clamp(1.4rem, 6.2vw, 2.1rem);
 
-    line-height: 1.15;
+    line-height: 1.16;
 
-    margin-bottom: 23px;
+    margin-bottom: 10px;
+  }
+
+  .hero-inner {
+    gap: 14px;
+  }
+
+  .cert-head {
+    margin-bottom: 10px;
   }
 
   .cert-card {
-    padding: 27px 22px;
+    padding: 18px 18px;
   }
 
   .cert-form-row {
@@ -1684,7 +1700,17 @@ input {
 
   .cert-form-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
+
+    margin-bottom: 10px;
+  }
+
+  .cert-field label {
+    margin-bottom: 5px;
+  }
+
+  .cert-form input {
+    padding: 10px 13px;
   }
 
   .cert-form .btn {
