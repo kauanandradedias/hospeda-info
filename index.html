@@ -33,6 +33,43 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!--
+    Meta Pixel — coloque o ID real em HOSPEDA_CONFIG.metaPixelId (config.js).
+    Enquanto ficar null, o Pixel não inicializa e um aviso aparece no console —
+    isso é intencional: nenhum ID foi informado ainda, então não presumimos um.
+    O evento de Purchase é enviado de duas formas (client-side aqui + server-side
+    via Conversions API no webhook), então mesmo sem o Pixel a venda é contabilizada.
+  -->
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      var pixelId = window.HOSPEDA_CONFIG && window.HOSPEDA_CONFIG.metaPixelId;
+      if (!pixelId) {
+        console.warn('[pixel] HOSPEDA_CONFIG.metaPixelId não configurado — Pixel não inicializado (config.js).');
+        return;
+      }
+
+      !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+        t = b.createElement(e); t.async = true; t.src = v;
+        t.onerror = function () {
+          window.__pixelLoadFailed = true;
+          console.error('[pixel] falha ao carregar fbevents.js — Purchase client-side não vai disparar. A Conversions API (server-side) ainda cobre a venda.');
+        };
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+    })();
+  </script>
 </head>
 
 <body>
@@ -113,12 +150,9 @@
           <div class="cert-head">
 
             <div>
-              <span class="cert-eyebrow">
-                Verifique seu e-mail
-              </span>
-
               <h2>
-                Seu endereço profissional
+                Preencha os dados abaixo e consulte o
+                seu e-mail profissional.
               </h2>
             </div>
 
@@ -149,65 +183,177 @@
           </div>
 
 
-          <form
-            class="cert-form"
-            id="domain-form"
-            novalidate
-          >
+          <div class="funnel" id="funnel">
 
-            <label for="email-address">
-              Digite o e-mail que você deseja verificar
-            </label>
+            <!-- ETAPA 1 — nome do escritório -->
+            <section class="funnel-step" data-step="busca">
 
-            <div class="cert-form-row">
+              <form class="cert-form" id="search-form" novalidate>
 
-              <input
-                type="email"
-                id="email-address"
-                name="email"
-                placeholder="contato@seuescritorio.adv.br"
-                autocomplete="email"
-                inputmode="email"
-                required
-              />
+                <div class="cert-form-grid">
+                  <div class="cert-field">
+                    <label for="user-name">Seu nome</label>
+                    <input
+                      type="text"
+                      id="user-name"
+                      name="userName"
+                      placeholder="Ex.: Mariana Ribeiro"
+                      autocomplete="name"
+                      required
+                    />
+                  </div>
 
-              <button
-                type="submit"
-                class="btn btn-gold"
-              >
-                <span class="btn-label">
-                  Verificar
-                </span>
+                  <div class="cert-field">
+                    <label for="firm-name">Nome do escritório</label>
+                    <input
+                      type="text"
+                      id="firm-name"
+                      name="firmName"
+                      placeholder="Ex.: Ribeiro e Costa Advocacia"
+                      autocomplete="organization"
+                      required
+                    />
+                  </div>
+                </div>
 
-                <span
-                  class="btn-loading"
-                  aria-hidden="true"
-                >
-                  Verificando...
-                </span>
+                <button type="submit" class="btn btn-gold cert-form-submit">
+                  <span class="btn-label">Verificar</span>
+                  <span class="btn-loading" aria-hidden="true">Verificando...</span>
+                </button>
+
+                <p class="cert-hint">
+                  Seu e-mail fica <span class="mono">seunome@seuescritorio.adv.br</span>
+                  — consultamos domínios .adv.br e .com.br disponíveis.
+                </p>
+              </form>
+
+              <div class="cert-results" id="search-feedback" role="status" aria-live="polite"></div>
+            </section>
+
+            <!-- ETAPA 2 — domínios sugeridos -->
+            <section class="funnel-step" data-step="resultados" hidden>
+
+              <button type="button" class="funnel-back" data-action="back-to-busca">
+                ← Buscar outro nome
               </button>
 
-            </div>
+              <form id="domain-form">
 
-            <p class="cert-hint">
-              Verificamos a disponibilidade do endereço
-              diretamente pelo nosso sistema.
-            </p>
+                <fieldset class="domain-group">
+                  <legend>Só advogado pode registrar</legend>
+                  <div class="domain-options" id="group-advbr"></div>
+                </fieldset>
 
-          </form>
+                <fieldset class="domain-group">
+                  <legend>Também disponíveis</legend>
+                  <div class="domain-options" id="group-combr"></div>
+                </fieldset>
 
+                <p class="cert-note">
+                  Só advogado ou sociedade com inscrição ativa na OAB pode
+                  registrar um domínio <span class="mono">.adv.br</span> —
+                  é a única extensão que já comprova a profissão no
+                  próprio endereço.
+                </p>
 
-          <!--
-            O JavaScript deverá inserir o resultado da consulta
-            do backend neste elemento.
-          -->
+                <label class="domain-later">
+                  <input type="radio" name="domain" value="__later__" />
+                  Ainda não decidi — quero decidir isso depois
+                </label>
 
-          <div
-            class="cert-results"
-            id="cert-results"
-            role="status"
-            aria-live="polite"
-          ></div>
+                <button type="submit" class="btn btn-gold" id="domain-continue" disabled>
+                  Continuar
+                </button>
+              </form>
+            </section>
+
+            <!-- ETAPA 3 — preview da assinatura -->
+            <section class="funnel-step" data-step="preview" hidden>
+
+              <button type="button" class="funnel-back" data-action="back-to-resultados">
+                ← Escolher outro domínio
+              </button>
+
+              <p class="cert-eyebrow">Já é seu</p>
+
+              <div class="signature-preview">
+                <div class="signature-preview-head">
+                  <p><span>De:</span> <span id="preview-from"></span></p>
+                  <p><span>Assunto:</span> Re: Contrato de prestação de serviços</p>
+                </div>
+                <div class="signature-preview-body">
+                  <p>Prezado(a) cliente,</p>
+                  <p>Segue anexo o contrato para análise. Fico à disposição para dúvidas.</p>
+                </div>
+                <div class="signature-block">
+                  <input type="text" id="signature-name" class="signature-field signature-field--name" value="Seu Nome" />
+                  <input type="text" id="signature-role" class="signature-field" value="Advogado(a)" />
+                  <p class="signature-firm" id="signature-firm"></p>
+                  <p class="signature-domain mono" id="signature-domain"></p>
+                  <p class="signature-email mono" id="signature-email"></p>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-gold btn-lg" id="go-checkout">
+                Contratar e-mail profissional
+              </button>
+            </section>
+
+            <!-- ETAPA 4 — checkout (CPF) -->
+            <section class="funnel-step" data-step="checkout" hidden>
+
+              <button type="button" class="funnel-back" data-action="back-to-preview">
+                ← Voltar
+              </button>
+
+              <form class="cert-form" id="checkout-form" novalidate>
+                <label for="cpf">CPF do titular</label>
+
+                <div class="cert-form-row">
+                  <input
+                    type="text"
+                    id="cpf"
+                    name="cpf"
+                    inputmode="numeric"
+                    placeholder="000.000.000-00"
+                    autocomplete="off"
+                    maxlength="14"
+                    required
+                  />
+
+                  <button type="submit" class="btn btn-gold">
+                    <span class="btn-label">Ir para o pagamento</span>
+                    <span class="btn-loading" aria-hidden="true">Gerando cobrança...</span>
+                  </button>
+                </div>
+
+                <p class="cert-hint">
+                  O banco exige o CPF para emitir o PIX — ele vai só para a cobrança.
+                </p>
+              </form>
+
+              <div class="cert-results" id="checkout-feedback" role="status" aria-live="polite"></div>
+            </section>
+
+            <!-- ETAPA 5 — pagamento PIX -->
+            <section class="funnel-step" data-step="pagamento" hidden>
+
+              <div class="pix-box">
+                <p class="pix-amount" id="pix-amount"></p>
+
+                <div class="pix-code" id="pix-payload"></div>
+
+                <button type="button" class="btn btn-outline" id="copy-pix">
+                  Copiar código PIX
+                </button>
+
+                <p class="pix-status" id="pix-status">
+                  <span class="dot"></span> Aguardando pagamento…
+                </p>
+              </div>
+            </section>
+
+          </div>
 
         </div>
 
@@ -508,7 +654,7 @@
             <div class="plan-pricing">
 
               <span class="plan-unit">
-                R$ 9,90
+                R$ 9,90/conta
               </span>
 
               <strong>
@@ -585,7 +731,7 @@
             <div class="plan-pricing">
 
               <span class="plan-unit">
-                R$ 9,90
+                R$ 9,90/conta
               </span>
 
               <strong>

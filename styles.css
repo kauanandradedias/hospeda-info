@@ -585,6 +585,23 @@ input {
   gap: 10px;
 }
 
+.cert-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+
+  margin-bottom: 16px;
+}
+
+.cert-field label {
+  margin-bottom: 9px;
+}
+
+.cert-form-submit {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
 .cert-form input {
   flex: 1;
 
@@ -761,6 +778,291 @@ input {
   color: var(--danger);
 
   padding-top: 12px;
+}
+
+/* =========================================================
+   FUNIL DE VERIFICAÇÃO — etapas dentro do .cert-card
+   ========================================================= */
+
+.funnel-step:focus {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+.funnel-back {
+  display: inline-flex;
+  align-items: center;
+
+  background: none;
+  border: 0;
+  padding: 0;
+
+  margin-bottom: 18px;
+
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+
+  color: var(--muted);
+
+  cursor: pointer;
+
+  transition: color 0.18s ease;
+}
+
+.funnel-back:hover {
+  color: var(--gold-light);
+}
+
+/* ---------- GRUPOS DE DOMÍNIO ---------- */
+
+.domain-group {
+  border: 0;
+  margin: 0 0 22px;
+  padding: 0;
+}
+
+.domain-group legend {
+  padding: 0;
+  margin-bottom: 12px;
+
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+
+  color: var(--gold-light);
+}
+
+.domain-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.domain-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 15px;
+
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  cursor: pointer;
+
+  transition: border-color 0.18s ease;
+}
+
+.domain-option:hover {
+  border-color: var(--gold-deep);
+}
+
+.domain-option input[type='radio'] {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+
+  accent-color: var(--gold-light);
+}
+
+.domain-option .domain-name {
+  flex: 1;
+  font-size: 0.88rem;
+}
+
+.domain-option.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.domain-option.is-disabled .domain-name {
+  text-decoration: line-through;
+}
+
+.cert-note {
+  margin: 4px 0 18px;
+
+  font-size: 0.82rem;
+  line-height: 1.6;
+
+  color: var(--muted);
+}
+
+.domain-later {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-top: 14px;
+  margin-bottom: 22px;
+
+  border-top: 1px solid var(--line);
+
+  font-size: 0.86rem;
+  color: var(--muted);
+
+  cursor: pointer;
+}
+
+.domain-later input {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+
+  accent-color: var(--gold-light);
+}
+
+/* ---------- PREVIEW DA ASSINATURA ---------- */
+
+.signature-preview {
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+
+  padding: 22px 24px;
+  margin-bottom: 22px;
+}
+
+.signature-preview-head {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.signature-preview-head p {
+  margin: 0 0 4px;
+
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.signature-preview-head p span:first-child {
+  color: var(--muted-2);
+  margin-right: 6px;
+}
+
+.signature-preview-body {
+  font-size: 0.88rem;
+  line-height: 1.6;
+
+  color: var(--parchment);
+}
+
+.signature-preview-body p {
+  margin: 0 0 8px;
+}
+
+.signature-block {
+  margin-top: 16px;
+  padding-top: 16px;
+
+  border-top: 1px solid var(--line);
+}
+
+.signature-field {
+  display: block;
+  width: 100%;
+
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed var(--line);
+
+  padding: 4px 0;
+  margin-bottom: 8px;
+
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--parchment);
+
+  transition: border-color 0.18s ease;
+}
+
+.signature-field:focus {
+  outline: none;
+  border-color: var(--gold-light);
+}
+
+.signature-field--name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--gold-light);
+}
+
+.signature-firm {
+  margin: 10px 0 2px;
+
+  font-size: 0.92rem;
+  font-weight: 500;
+
+  color: var(--parchment);
+}
+
+.signature-domain,
+.signature-email {
+  margin: 2px 0;
+  font-size: 0.85rem;
+}
+
+/* ---------- PAGAMENTO PIX ---------- */
+
+.pix-box {
+  padding: 6px 0 2px;
+  text-align: center;
+}
+
+.pix-amount {
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+
+  color: var(--gold-light);
+
+  margin: 0 0 18px;
+}
+
+.pix-code {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  line-height: 1.5;
+
+  color: var(--parchment);
+
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  padding: 14px 16px;
+  margin-bottom: 16px;
+
+  text-align: left;
+  word-break: break-all;
+}
+
+.pix-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin: 18px 0 0;
+
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.pix-status--paid {
+  color: var(--ok);
+}
+
+.pix-status--paid .dot {
+  background: var(--ok);
+  box-shadow: 0 0 8px rgba(134, 168, 102, 0.5);
 }
 
 /* =========================================================
@@ -1065,24 +1367,64 @@ input {
   margin-bottom: 6px;
 }
 
-.plan-price {
-  font-family: var(--font-display);
+.plan-header {
+  margin-bottom: 6px;
+}
 
-  font-size: 2.25rem;
+.plan-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-  color: var(--parchment);
+.plan-storage,
+.plan-accounts {
+  margin: 0 0 2px;
+
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.plan-accounts {
+  margin-bottom: 20px;
+}
+
+/* Preço: o valor unitário ("R$ 9,90/conta") é informativo e fica discreto na
+   própria linha; o total mensal é o que decide a compra, então fica em
+   destaque, no tamanho e cor de um preço de verdade — sem parecer promoção
+   riscada, porque não é uma: é só unitário x quantidade de contas. */
+.plan-pricing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 6px;
 
   margin-bottom: 24px;
 }
 
-.plan-price span {
-  font-family: var(--font-body);
+.plan-unit {
+  flex-basis: 100%;
+  margin-bottom: 4px;
 
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.plan-pricing strong {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 600;
+
+  color: var(--parchment);
+}
+
+.plan-period {
+  font-family: var(--font-body);
   font-size: 0.82rem;
 
   color: var(--muted);
-
-  font-weight: 500;
 }
 
 .plan-features {
@@ -1310,7 +1652,17 @@ input {
   .hero-inner {
     grid-template-columns: 1fr;
 
-    gap: 52px;
+    gap: 32px;
+  }
+
+  /* No mobile, o cartão de verificação vem ANTES do texto de marketing —
+     tráfego de anúncio precisa ver o formulário sem rolar a tela. */
+  .cert-card {
+    order: 1;
+  }
+
+  .hero-copy {
+    order: 2;
   }
 
   .hero h1 {
@@ -1377,6 +1729,11 @@ input {
 
   .cert-form-row {
     flex-direction: column;
+  }
+
+  .cert-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .cert-form .btn {
