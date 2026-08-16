@@ -1,31 +1,89 @@
-// Vercel serverless function (Node runtime): POST { email } -> disponibilidade do domínio no Registro.br
+// POST { name } -> sugestões de domínio agrupadas, com disponibilidade no Registro.br
 //
-// O formulário pede o e-mail completo desejado (ex.: contato@seuescritorio.adv.br);
-// aqui extraímos só a parte do domínio e consultamos o RDAP público do Registro.br
-// (rdap.registro.br), o sucessor do WHOIS.
-// 200 = domínio encontrado (indisponível) | 404 = não encontrado (disponível).
-// Cacheamos em memória por alguns minutos para não estourar o limite de
-// requisições por IP do Registro.br. Esse cache é por instância/efêmero — para
-// produção com tráfego alto, troque por um KV externo (ex.: Upstash Redis).
+// Recebe o NOME DO ESCRITÓRIO e devolve 4 candidatos agrupados por extensão.
+// A consulta usa o RDAP público do Registro.br (rdap.registro.br), sucessor do WHOIS:
+//   404 = domínio não encontrado -> disponível
+//   200 = domínio encontrado     -> indisponível
+//   qualquer outra coisa/erro    -> indeterminado
+//
+// IMPORTANTE: "indeterminado" NUNCA bloqueia o funil. Se o Registro.br cair, der
+// timeout ou aplicar rate-limit, o candidato continua selecionável — perder uma venda
+// por causa da instabilidade de um serviço de terceiro seria pior do que mostrar uma
+// sugestão sem confirmação.
 
-const CACHE_TTL_MS = 10 * 60 * 1000;
+const { getCache, setCache } = require('../lib/storage.js');
+
 const RDAP_TIMEOUT_MS = 6000;
-const cache = new Map();
+const DOMAIN_CACHE_TTL_MS = 10 * 60 * 1000;
 
-const DOMAIN_RE = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+br$/;
+// Palavras que quase todo escritório tem no nome e que só poluiriam o domínio.
+const STOPWORDS = new Set([
+  'advocacia',
+  'advogado',
+  'advogados',
+  'advogadas',
+  'associados',
+  'associadas',
+  'sociedade',
+  'escritorio',
+  'consultoria',
+  'juridica',
+  'juridico',
+  'e',
+  'de',
+  'da',
+  'do',
+  'das',
+  'dos',
+]);
 
-function extractDomain(email) {
-  const parts = String(email).trim().toLowerCase().split('@');
-  if (parts.length !== 2 || !parts[0] || !parts[1]) return { error: 'email_invalido' };
-  const domain = parts[1].replace(/\.+$/, '');
-  return DOMAIN_RE.test(domain) ? { domain } : { error: 'apenas_dominios_br' };
+function stripAccents(raw) {
+  return raw
+    .normalize('NFD')
+    .split('')
+    .filter((ch) => {
+      const code = ch.codePointAt(0);
+      return code < 0x300 || code > 0x36f; // descarta marcas combinantes (acentos)
+    })
+    .join('');
+}
+
+/**
+ * "Andrade & Souza Advocacia" -> "andradesouza"
+ * Domínios .br não aceitam espaço nem "&"; juntamos as palavras significativas.
+ */
+function toBase(raw) {
+  const words = stripAccents(String(raw))
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .split(/[\s-]+/)
+    .filter(Boolean);
+
+  const meaningful = words.filter((w) => !STOPWORDS.has(w));
+  // Se o nome for só stopwords ("Advocacia Associados"), usa as palavras originais.
+  const chosen = meaningful.length ? meaningful : words;
+
+  return chosen.join('').slice(0, 40);
+}
+
+function buildCandidates(base) {
+  // Só oferece a variação "...advogados" quando ela acrescenta algo: para
+  // "Advocacia Associados" isso viraria "advocaciaassociadosadvogados", que ninguém
+  // quer no cartão. Nesse caso ficamos só com o domínio base (e poupamos 2 consultas
+  // ao Registro.br).
+  const alreadyMentionsProfession = /advog|advocacia/.test(base);
+
+  const suffixes = alreadyMentionsProfession ? [''] : ['', 'advogados'];
+
+  return {
+    advbr: suffixes.map((suffix) => `${base}${suffix}.adv.br`),
+    combr: suffixes.map((suffix) => `${base}${suffix}.com.br`),
+  };
 }
 
 async function checkOne(domain) {
-  const cached = cache.get(domain);
-  if (cached && Date.now() - cached.at < CACHE_TTL_MS) {
-    return cached.status;
-  }
+  const cached = await getCache(`rdap:${domain}`);
+  if (cached) return cached;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), RDAP_TIMEOUT_MS);
@@ -46,7 +104,12 @@ async function checkOne(domain) {
     clearTimeout(timeout);
   }
 
-  cache.set(domain, { status, at: Date.now() });
+  // Resultado indeterminado não entra em cache: é falha temporária, e cachear
+  // significaria repetir a mesma resposta ruim para todo mundo por 10 minutos.
+  if (status !== 'indeterminado') {
+    await setCache(`rdap:${domain}`, status, DOMAIN_CACHE_TTL_MS);
+  }
+
   return status;
 }
 
@@ -56,18 +119,31 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const { email } = req.body || {};
-  if (typeof email !== 'string' || !email.trim()) {
-    res.status(400).json({ error: 'email_invalido' });
+  const { name } = req.body || {};
+  if (typeof name !== 'string' || !name.trim()) {
+    res.status(400).json({ error: 'nome_invalido' });
     return;
   }
 
-  const { domain, error } = extractDomain(email);
-  if (error) {
-    res.status(400).json({ error });
+  const base = toBase(name);
+  if (!base) {
+    res.status(400).json({ error: 'nome_invalido' });
     return;
   }
 
-  const status = await checkOne(domain);
-  res.status(200).json({ results: [{ domain, status }] });
+  const candidates = buildCandidates(base);
+  const groups = {};
+
+  for (const [group, domains] of Object.entries(candidates)) {
+    groups[group] = [];
+    for (const domain of domains) {
+      // Sequencial de propósito: espaça as chamadas ao RDAP do Registro.br.
+      const status = await checkOne(domain);
+      groups[group].push({ domain, status });
+    }
+  }
+
+  res.status(200).json({ base, groups });
 };
+
+module.exports.toBase = toBase;
