@@ -1,31 +1,31 @@
 /* =========================================================
-   TIMBRE — DESIGN SYSTEM
-   Premium / Editorial / Advocacia
+   HOSPEDA INFO — DESIGN SYSTEM
+   Performance / Growth / Advocacia
    ========================================================= */
 
 :root {
   /* ---------- CORES ---------- */
-  --ink: #080806;
-  --ink-2: #11100d;
-  --ink-3: #181611;
+  --ink: #0a0d14;
+  --ink-2: #12161f;
+  --ink-3: #1a1f2b;
 
-  --line: #3a3121;
-  --line-soft: #272218;
+  --line: #262c3a;
+  --line-soft: #1b2029;
 
-  --gold: #d4af5a;
-  --gold-light: #f2d58a;
-  --gold-bright: #ffe3a0;
-  --gold-deep: #a67d2d;
+  --accent-deep: #c4291d;
+  --accent: #ff3b2e;
+  --accent-light: #ff6b52;
+  --accent-bright: #ff8f73;
 
-  --parchment: #f1ead8;
-  --muted: #aaa18d;
-  --muted-2: #716958;
+  --parchment: #ffffff;
+  --muted: #9ba1ae;
+  --muted-2: #6b7280;
 
-  --danger: #b4553b;
-  --ok: #86a866;
+  --danger: #f2994a;
+  --ok: #34d399;
 
   /* ---------- TIPOGRAFIA ---------- */
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
@@ -70,8 +70,8 @@ h3 {
   font-family: var(--font-display);
   color: var(--parchment);
   margin: 0 0 0.5em;
-  font-weight: 500;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 p {
@@ -109,7 +109,7 @@ input {
    ========================================================= */
 
 :focus-visible {
-  outline: 2px solid var(--gold-light);
+  outline: 2px solid var(--accent-light);
   outline-offset: 4px;
 }
 
@@ -119,7 +119,7 @@ input {
 
 .mono {
   font-family: var(--font-mono);
-  color: var(--gold-light);
+  color: var(--accent-light);
   font-size: 0.94em;
 }
 
@@ -158,50 +158,37 @@ input {
   transform: translateY(-2px);
 }
 
-/* ---------- BOTÃO DOURADO ---------- */
+/* ---------- BOTÃO PRIMÁRIO (contorno vermelho, como no anúncio) ---------- */
 
-.btn-gold {
-  background:
-    linear-gradient(
-      180deg,
-      var(--gold-light) 0%,
-      var(--gold) 48%,
-      #bd9137 100%
-    );
+.btn-primary {
+  background: rgba(255, 59, 46, 0.08);
 
-  color: #100e08;
+  color: var(--parchment);
 
-  border-color: var(--gold-light);
+  border: 2px solid var(--accent);
 
-  box-shadow:
-    0 8px 24px rgba(212, 175, 90, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(255, 59, 46, 0.12);
 }
 
-.btn-gold:hover {
-  background:
-    linear-gradient(
-      180deg,
-      var(--gold-bright),
-      var(--gold-light)
-    );
+.btn-primary:hover {
+  background: rgba(255, 59, 46, 0.2);
+  border-color: var(--accent-light);
 
-  box-shadow:
-    0 10px 30px rgba(212, 175, 90, 0.28);
+  box-shadow: 0 10px 30px rgba(255, 59, 46, 0.28);
 }
 
 /* ---------- BOTÃO TRANSPARENTE ---------- */
 
 .btn-ghost {
-  background: rgba(212, 175, 90, 0.025);
+  background: rgba(255, 59, 46, 0.025);
   border-color: var(--line);
   color: var(--parchment);
 }
 
 .btn-ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold-light);
-  background: rgba(212, 175, 90, 0.06);
+  border-color: var(--accent);
+  color: var(--accent-light);
+  background: rgba(255, 59, 46, 0.06);
 }
 
 /* ---------- OUTLINE ---------- */
@@ -210,14 +197,14 @@ input {
   width: 100%;
 
   background: transparent;
-  border-color: var(--gold-deep);
+  border-color: var(--accent-deep);
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 }
 
 .btn-outline:hover {
-  border-color: var(--gold-light);
-  background: rgba(212, 175, 90, 0.08);
+  border-color: var(--accent-light);
+  background: rgba(255, 59, 46, 0.08);
 }
 
 .btn-lg {
@@ -260,7 +247,7 @@ input {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  border-bottom: 1px solid rgba(212, 175, 90, 0.12);
+  border-bottom: 1px solid rgba(255, 59, 46, 0.12);
 }
 
 .header-inner {
@@ -281,28 +268,18 @@ input {
   text-decoration: none;
 
   font-family: var(--font-display);
-  font-size: 1.45rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
 
   color: var(--parchment);
 
-  letter-spacing: 0.015em;
+  letter-spacing: -0.005em;
 }
 
-.brand-seal {
-  width: 28px;
-  height: 28px;
+.brand-mark {
+  width: 26px;
+  height: 29px;
   flex-shrink: 0;
-}
-
-.brand-seal circle {
-  fill: none;
-  stroke: var(--gold-light);
-  stroke-width: 1.4;
-}
-
-.brand-seal path {
-  fill: var(--gold);
 }
 
 /* ---------- NAVEGAÇÃO ---------- */
@@ -336,13 +313,13 @@ input {
   width: 0;
   height: 1px;
 
-  background: var(--gold);
+  background: var(--accent);
 
   transition: width 0.18s ease;
 }
 
 .site-nav a:hover {
-  color: var(--gold-light);
+  color: var(--accent-light);
 }
 
 .site-nav a:hover::after {
@@ -367,12 +344,12 @@ input {
   background:
     radial-gradient(
       ellipse 850px 550px at 8% 5%,
-      rgba(212, 175, 90, 0.13),
+      rgba(255, 59, 46, 0.13),
       transparent 66%
     ),
     radial-gradient(
       ellipse 500px 400px at 95% 80%,
-      rgba(212, 175, 90, 0.045),
+      rgba(255, 59, 46, 0.045),
       transparent 70%
     ),
     var(--ink);
@@ -389,7 +366,7 @@ input {
   left: -330px;
   top: -300px;
 
-  border: 1px solid rgba(212, 175, 90, 0.07);
+  border: 1px solid rgba(255, 59, 46, 0.07);
 
   border-radius: 50%;
 
@@ -420,7 +397,7 @@ input {
 
   letter-spacing: 0.18em;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 
   margin-bottom: 18px;
 }
@@ -434,7 +411,7 @@ input {
 
   margin-bottom: 28px;
 
-  font-weight: 500;
+  font-weight: 800;
 
   letter-spacing: -0.02em;
 
@@ -443,8 +420,8 @@ input {
 
 /* Destaque dourado dentro da headline,
    caso o texto seja dividido em <span> */
-.hero h1 .gold {
-  color: var(--gold-light);
+.hero h1 .accent {
+  color: var(--accent);
 }
 
 /* =========================================================
@@ -462,7 +439,7 @@ input {
     ),
     var(--ink-2);
 
-  border: 1px solid rgba(212, 175, 90, 0.38);
+  border: 1px solid rgba(255, 59, 46, 0.38);
 
   border-radius: 7px;
 
@@ -470,7 +447,7 @@ input {
 
   box-shadow:
     0 35px 80px -40px rgba(0, 0, 0, 0.9),
-    0 0 45px rgba(212, 175, 90, 0.045);
+    0 0 45px rgba(255, 59, 46, 0.045);
 }
 
 .cert-card::before {
@@ -480,7 +457,7 @@ input {
 
   inset: 7px;
 
-  border: 1px solid rgba(212, 175, 90, 0.12);
+  border: 1px solid rgba(255, 59, 46, 0.12);
 
   border-radius: 4px;
 
@@ -498,9 +475,9 @@ input {
   width: 80px;
   height: 2px;
 
-  background: var(--gold-light);
+  background: var(--accent-light);
 
-  box-shadow: 0 0 18px rgba(242, 213, 138, 0.35);
+  box-shadow: 0 0 18px rgba(255, 107, 82, 0.35);
 }
 
 .cert-head {
@@ -522,7 +499,7 @@ input {
 
   letter-spacing: 0.16em;
 
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .cert-seal-mark {
@@ -535,7 +512,7 @@ input {
 .cert-seal-mark circle {
   fill: none;
 
-  stroke: var(--gold-light);
+  stroke: var(--accent-light);
 
   stroke-width: 1.2;
 }
@@ -544,7 +521,7 @@ input {
 .cert-seal-mark path {
   fill: none;
 
-  stroke: var(--gold);
+  stroke: var(--accent);
 
   stroke-width: 1.3;
 
@@ -619,12 +596,12 @@ input {
 }
 
 .cert-form input:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
 
   outline: none;
 
   box-shadow:
-    0 0 0 3px rgba(212, 175, 90, 0.08);
+    0 0 0 3px rgba(255, 59, 46, 0.08);
 }
 
 .cert-hint {
@@ -741,17 +718,17 @@ input {
 .cert-badge--disponivel {
   color: var(--ok);
 
-  border-color: rgba(134, 168, 102, 0.4);
+  border-color: rgba(52, 211, 153, 0.4);
 
-  background: rgba(134, 168, 102, 0.08);
+  background: rgba(52, 211, 153, 0.08);
 }
 
 .cert-badge--indisponivel {
   color: var(--danger);
 
-  border-color: rgba(180, 85, 59, 0.4);
+  border-color: rgba(242, 153, 74, 0.4);
 
-  background: rgba(180, 85, 59, 0.08);
+  background: rgba(242, 153, 74, 0.08);
 }
 
 .cert-badge--indeterminado {
@@ -773,7 +750,7 @@ input {
    ========================================================= */
 
 .funnel-step:focus {
-  outline: 2px solid var(--gold-light);
+  outline: 2px solid var(--accent-light);
   outline-offset: 6px;
   border-radius: 4px;
 }
@@ -800,7 +777,7 @@ input {
 }
 
 .funnel-back:hover {
-  color: var(--gold-light);
+  color: var(--accent-light);
 }
 
 /* ---------- GRUPOS DE DOMÍNIO ---------- */
@@ -822,7 +799,7 @@ input {
   text-transform: uppercase;
   letter-spacing: 0.14em;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 }
 
 .domain-options {
@@ -848,7 +825,7 @@ input {
 }
 
 .domain-option:hover {
-  border-color: var(--gold-deep);
+  border-color: var(--accent-deep);
 }
 
 .domain-option input[type='radio'] {
@@ -856,7 +833,7 @@ input {
   height: 16px;
   flex-shrink: 0;
 
-  accent-color: var(--gold-light);
+  accent-color: var(--accent-light);
 }
 
 .domain-option .domain-name {
@@ -903,7 +880,7 @@ input {
   height: 15px;
   flex-shrink: 0;
 
-  accent-color: var(--gold-light);
+  accent-color: var(--accent-light);
 }
 
 /* ---------- PREVIEW DA ASSINATURA ---------- */
@@ -974,13 +951,13 @@ input {
 
 .signature-field:focus {
   outline: none;
-  border-color: var(--gold-light);
+  border-color: var(--accent-light);
 }
 
 .signature-field--name {
   font-family: var(--font-display);
   font-size: 1.2rem;
-  color: var(--gold-light);
+  color: var(--accent-light);
 }
 
 .signature-firm {
@@ -1009,7 +986,7 @@ input {
   font-family: var(--font-display);
   font-size: 2.3rem;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 
   margin: 0 0 18px;
 }
@@ -1050,7 +1027,7 @@ input {
 
 .pix-status--paid .dot {
   background: var(--ok);
-  box-shadow: 0 0 8px rgba(134, 168, 102, 0.5);
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
 }
 
 /* =========================================================
@@ -1058,8 +1035,8 @@ input {
    ========================================================= */
 
 .trust-bar {
-  border-top: 1px solid rgba(212, 175, 90, 0.13);
-  border-bottom: 1px solid rgba(212, 175, 90, 0.13);
+  border-top: 1px solid rgba(255, 59, 46, 0.13);
+  border-bottom: 1px solid rgba(255, 59, 46, 0.13);
 
   background: var(--ink-2);
 }
@@ -1096,10 +1073,10 @@ input {
 
   border-radius: 50%;
 
-  background: var(--gold-light);
+  background: var(--accent-light);
 
   box-shadow:
-    0 0 8px rgba(242, 213, 138, 0.5);
+    0 0 8px rgba(255, 107, 82, 0.5);
 
   flex-shrink: 0;
 }
@@ -1187,7 +1164,7 @@ input {
 .feature-icon circle {
   fill: none;
 
-  stroke: var(--gold-light);
+  stroke: var(--accent-light);
 
   stroke-width: 1.5;
 
@@ -1240,7 +1217,7 @@ input {
 
   font-size: 1.65rem;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 
   border-bottom: 1px solid var(--line);
 
@@ -1304,18 +1281,18 @@ input {
 .plan-card--highlight {
   position: relative;
 
-  border-color: var(--gold-deep);
+  border-color: var(--accent-deep);
 
   background:
     linear-gradient(
       145deg,
-      rgba(212, 175, 90, 0.045),
+      rgba(255, 59, 46, 0.045),
       transparent 55%
     ),
     var(--ink-3);
 
   box-shadow:
-    0 25px 60px -35px rgba(212, 175, 90, 0.35);
+    0 25px 60px -35px rgba(255, 59, 46, 0.35);
 }
 
 .plan-card--highlight::before {
@@ -1329,10 +1306,10 @@ input {
 
   height: 2px;
 
-  background: var(--gold-light);
+  background: var(--accent-light);
 
   box-shadow:
-    0 0 15px rgba(242, 213, 138, 0.35);
+    0 0 15px rgba(255, 107, 82, 0.35);
 }
 
 .plan-badge {
@@ -1344,7 +1321,7 @@ input {
 
   letter-spacing: 0.12em;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 
   margin: 0 0 11px;
 }
@@ -1452,12 +1429,12 @@ input {
   width: 5px;
   height: 5px;
 
-  background: var(--gold);
+  background: var(--accent);
 
   border-radius: 50%;
 
   box-shadow:
-    0 0 7px rgba(212, 175, 90, 0.35);
+    0 0 7px rgba(255, 59, 46, 0.35);
 }
 
 /* =========================================================
@@ -1519,7 +1496,7 @@ input {
 
   font-weight: 400;
 
-  color: var(--gold-light);
+  color: var(--accent-light);
 
   flex-shrink: 0;
 
@@ -1558,12 +1535,12 @@ input {
   background:
     radial-gradient(
       ellipse 700px 420px at 50% 0%,
-      rgba(212, 175, 90, 0.17),
+      rgba(255, 59, 46, 0.17),
       transparent 66%
     ),
     var(--ink);
 
-  border-top: 1px solid rgba(212, 175, 90, 0.13);
+  border-top: 1px solid rgba(255, 59, 46, 0.13);
 }
 
 .final-cta h2 {

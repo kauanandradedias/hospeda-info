@@ -27,7 +27,7 @@
   />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
@@ -88,12 +88,24 @@
         aria-label="Hospeda Info — início"
       >
 
+        <svg class="brand-mark" viewBox="0 0 32 36" aria-hidden="true">
+          <defs>
+            <linearGradient id="brandGradientHeader" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:var(--accent-light)" />
+              <stop offset="100%" style="stop-color:var(--accent-deep)" />
+            </linearGradient>
+          </defs>
+          <polygon points="16,2 29,9 16,16 3,9" fill="url(#brandGradientHeader)" />
+          <polygon points="16,11 29,18 16,25 3,18" fill="url(#brandGradientHeader)" opacity="0.85" />
+          <polygon points="16,20 29,27 16,34 3,27" fill="url(#brandGradientHeader)" opacity="0.7" />
+        </svg>
+
         <span>Hospeda Info</span>
 
       </a>
 
       <a
-        class="btn btn-gold header-cta"
+        class="btn btn-primary header-cta"
         href="#verificar"
       >
         Verificar disponibilidade
@@ -124,11 +136,11 @@
           </p>
 
           <h1>
-            E-mail profissional que
-            <span class="gold">
-              reforça o nome do seu escritório
-            </span>
-            e aumenta sua autoridade na comunicação com o cliente.
+            E-mail
+            <span class="accent">profissional</span>
+            que reforça o nome do seu escritório e aumenta sua
+            <span class="accent">autoridade</span>
+            na comunicação com o cliente.
           </h1>
 
         </div>
@@ -210,7 +222,7 @@
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-gold cert-form-submit">
+                <button type="submit" class="btn btn-primary cert-form-submit">
                   <span class="btn-label">Verificar</span>
                   <span class="btn-loading" aria-hidden="true">Verificando...</span>
                 </button>
@@ -255,7 +267,7 @@
                   Ainda não decidi — quero decidir isso depois
                 </label>
 
-                <button type="submit" class="btn btn-gold" id="domain-continue" disabled>
+                <button type="submit" class="btn btn-primary" id="domain-continue" disabled>
                   Continuar
                 </button>
               </form>
@@ -288,7 +300,7 @@
                 </div>
               </div>
 
-              <button type="button" class="btn btn-gold btn-lg" id="go-checkout">
+              <button type="button" class="btn btn-primary btn-lg" id="go-checkout">
                 Contratar e-mail profissional
               </button>
             </section>
@@ -315,7 +327,7 @@
                     required
                   />
 
-                  <button type="submit" class="btn btn-gold">
+                  <button type="submit" class="btn btn-primary">
                     <span class="btn-label">Ir para o pagamento</span>
                     <span class="btn-loading" aria-hidden="true">Gerando cobrança...</span>
                   </button>
@@ -759,7 +771,7 @@
             </ul>
 
             <a
-              class="btn btn-gold"
+              class="btn btn-primary"
               href="#verificar"
             >
               Contratar
@@ -899,7 +911,7 @@
         </p>
 
         <a
-          class="btn btn-gold btn-lg"
+          class="btn btn-primary btn-lg"
           href="#verificar"
         >
           Verificar disponibilidade
@@ -926,6 +938,18 @@
         class="brand brand-footer"
         href="#topo"
       >
+
+        <svg class="brand-mark" viewBox="0 0 32 36" aria-hidden="true">
+          <defs>
+            <linearGradient id="brandGradientFooter" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:var(--accent-light)" />
+              <stop offset="100%" style="stop-color:var(--accent-deep)" />
+            </linearGradient>
+          </defs>
+          <polygon points="16,2 29,9 16,16 3,9" fill="url(#brandGradientFooter)" />
+          <polygon points="16,11 29,18 16,25 3,18" fill="url(#brandGradientFooter)" opacity="0.85" />
+          <polygon points="16,20 29,27 16,34 3,27" fill="url(#brandGradientFooter)" opacity="0.7" />
+        </svg>
 
         <span>
           Hospeda Info
