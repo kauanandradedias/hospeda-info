@@ -277,9 +277,12 @@ input {
 }
 
 .brand-mark {
-  width: 27px;
+  width: 24px;
   height: auto;
   flex-shrink: 0;
+
+  display: block;
+  object-fit: contain;
 }
 
 /* ---------- NAVEGAÇÃO ---------- */
